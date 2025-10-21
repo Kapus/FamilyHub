@@ -32,8 +32,208 @@
                 viewDay: container.querySelector('[data-calendar-view="dayGridDay"]'),
             };
 
-            const formWrapper = container.querySelector('[data-calendar-form]');
-            const toggleButton = container.querySelector('[data-calendar-toggle]');
+            const createButton = container.querySelector('[data-calendar-create]');
+            const filterSelect = container.querySelector('[data-calendar-filter]');
+            const modalEl = container.querySelector('#calendar-event-modal');
+            const modalForm = modalEl ? modalEl.querySelector('#calendar-modal-form') : null;
+            const modalTitle = modalEl ? modalEl.querySelector('[data-calendar-modal-title]') : null;
+            const modalFeedback = modalEl ? modalEl.querySelector('#calendar-modal-feedback') : null;
+            const saveButton = modalEl ? modalEl.querySelector('[data-calendar-save]') : null;
+            const deleteButton = modalEl ? modalEl.querySelector('[data-calendar-delete]') : null;
+
+            const applyFeedback = (element, message, status) => {
+                if (!element) {
+                    return;
+                }
+                const baseClass = element.dataset.baseClass ?? element.className;
+                if (!element.dataset.baseClass) {
+                    element.dataset.baseClass = baseClass;
+                }
+                element.className = baseClass || '';
+                element.textContent = message || '';
+                if (!message || !status) {
+                    return;
+                }
+                if (status === 'success') {
+                    element.classList.add('text-success');
+                } else if (status === 'danger') {
+                    element.classList.add('text-danger');
+                }
+            };
+
+            let modalInstance = null;
+            let modalMode = 'create';
+            let currentEventId = null;
+
+            const getActiveFilter = () => {
+                if (!filterSelect) {
+                    return 'all';
+                }
+                const value = filterSelect.value || 'all';
+                return value;
+            };
+
+            const getModalInstance = () => {
+                if (!modalEl) {
+                    return null;
+                }
+                const modalFactory = typeof bootstrap !== 'undefined' && bootstrap.Modal
+                    ? bootstrap.Modal
+                    : null;
+                if (!modalFactory) {
+                    console.warn('Bootstrap Modal saknas, kan inte visa dialogen.');
+                    return null;
+                }
+                modalInstance = modalFactory.getOrCreateInstance(modalEl);
+                return modalInstance;
+            };
+
+            const resetModalForm = () => {
+                if (!modalForm) {
+                    return;
+                }
+                modalForm.reset();
+                const colorField = modalForm.querySelector('#modal-event-color');
+                if (colorField) {
+                    colorField.value = '#0d6efd';
+                }
+                const idField = modalForm.querySelector('#modal-event-id');
+                if (idField) {
+                    idField.value = '';
+                }
+                applyFeedback(modalFeedback, '', null);
+            };
+
+            const setModalMode = (mode) => {
+                modalMode = mode;
+                if (!modalForm) {
+                    return;
+                }
+                const titleLabel = modalTitle
+                    ? (mode === 'edit'
+                        ? (modalTitle.dataset.editLabel || 'Redigera händelse')
+                        : (modalTitle.dataset.createLabel || 'Ny händelse'))
+                    : null;
+                if (modalTitle && titleLabel) {
+                    modalTitle.textContent = titleLabel;
+                }
+                if (saveButton) {
+                    const editText = saveButton.dataset.editText || saveButton.textContent || 'Spara ändringar';
+                    const createText = saveButton.dataset.createText || 'Skapa händelse';
+                    saveButton.textContent = mode === 'edit' ? editText : createText;
+                }
+                if (deleteButton) {
+                    if (mode === 'edit') {
+                        deleteButton.classList.remove('d-none');
+                        deleteButton.disabled = false;
+                    } else {
+                        deleteButton.classList.add('d-none');
+                        deleteButton.disabled = false;
+                        deleteButton.dataset.eventId = '';
+                    }
+                }
+            };
+
+            const focusFirstField = () => {
+                if (!modalForm) {
+                    return;
+                }
+                const focusTarget = modalForm.querySelector('input, select, textarea');
+                if (focusTarget) {
+                    try {
+                        focusTarget.focus({ preventScroll: true });
+                    } catch (error) {
+                        focusTarget.focus();
+                    }
+                }
+            };
+
+            const openCreateModal = () => {
+                if (!modalForm) {
+                    return;
+                }
+                currentEventId = null;
+                resetModalForm();
+                setModalMode('create');
+
+                const userField = modalForm.querySelector('#modal-event-user');
+                if (userField) {
+                    const filterValue = getActiveFilter();
+                    if (filterValue === 'family' || filterValue === 'all') {
+                        userField.value = '';
+                    } else {
+                        userField.value = filterValue;
+                    }
+                }
+
+                const instance = getModalInstance();
+                if (instance) {
+                    instance.show();
+                }
+            };
+
+            const openEditModal = (calendarEvent) => {
+                if (!modalForm || !calendarEvent) {
+                    return;
+                }
+                resetModalForm();
+                setModalMode('edit');
+
+                const startDate = calendarEvent.startStr ?? '';
+                const inclusiveEnd = calendarEvent.extendedProps && calendarEvent.extendedProps.inclusiveEnd
+                    ? calendarEvent.extendedProps.inclusiveEnd
+                    : startDate;
+                const userValue = calendarEvent.extendedProps && typeof calendarEvent.extendedProps.anvandarId !== 'undefined'
+                    ? calendarEvent.extendedProps.anvandarId
+                    : '';
+                const colorValue = calendarEvent.backgroundColor
+                    || (calendarEvent.extendedProps && calendarEvent.extendedProps.color)
+                    || '#0d6efd';
+
+                const idField = modalForm.querySelector('#modal-event-id');
+                const titleField = modalForm.querySelector('#modal-event-title');
+                const startField = modalForm.querySelector('#modal-event-start');
+                const endField = modalForm.querySelector('#modal-event-end');
+                const userField = modalForm.querySelector('#modal-event-user');
+                const colorField = modalForm.querySelector('#modal-event-color');
+
+                if (idField) {
+                    idField.value = calendarEvent.id;
+                }
+                currentEventId = calendarEvent.id;
+                if (titleField) {
+                    titleField.value = calendarEvent.title || '';
+                }
+                if (startField) {
+                    startField.value = startDate;
+                }
+                if (endField) {
+                    endField.value = inclusiveEnd || '';
+                }
+                if (userField) {
+                    userField.value = userValue === null || userValue === ''
+                        ? ''
+                        : String(userValue);
+                }
+                if (colorField) {
+                    colorField.value = colorValue;
+                }
+
+                if (deleteButton) {
+                    deleteButton.dataset.eventId = calendarEvent.id;
+                    deleteButton.disabled = false;
+                }
+
+                applyFeedback(modalFeedback, '', null);
+
+                const instance = getModalInstance();
+                if (instance) {
+                    instance.show();
+                }
+            };
+
+            resetModalForm();
+            setModalMode('create');
 
             const viewButtons = [];
 
@@ -54,7 +254,12 @@
                         const params = new URLSearchParams({
                             start: info.startStr,
                             end: info.endStr,
+                            _: Date.now().toString(),
                         });
+                        const filterValue = getActiveFilter();
+                        if (filterValue && filterValue !== 'all') {
+                            params.set('userId', filterValue);
+                        }
                         const response = await fetch(`ajax/events.php?${params.toString()}`);
                         if (!response.ok) {
                             throw new Error('Kunde inte hämta kalenderdata.');
@@ -62,6 +267,7 @@
                         const data = await response.json();
                         success(data);
                     } catch (error) {
+                        console.error('FullCalendar events fetch failed:', error);
                         failure(error);
                     }
                 },
@@ -69,6 +275,10 @@
                     if (info.backgroundColor) {
                         info.el.style.borderColor = info.backgroundColor;
                     }
+                },
+                eventClick(info) {
+                    info.jsEvent.preventDefault();
+                    openEditModal(info.event);
                 },
                 datesSet() {
                     setActiveView(calendarRef.view.type);
@@ -121,69 +331,43 @@
 
             setActiveView(calendarRef.view.type);
 
-            const form = container.querySelector('#calendar-event-form');
-            const feedback = container.querySelector('#calendar-feedback');
+            if (createButton) {
+                createButton.addEventListener('click', () => openCreateModal());
+            }
 
-            const setFormVisible = (visible) => {
-                if (!formWrapper || !toggleButton) {
-                    return;
-                }
-                formWrapper.hidden = !visible;
-                formWrapper.classList.toggle('d-none', !visible);
-                toggleButton.textContent = visible ? 'Avbryt' : 'Lägg till';
-                toggleButton.setAttribute('aria-expanded', visible ? 'true' : 'false');
-                if (!visible && form) {
-                    form.reset();
-                    const colorField = form.querySelector('#event-color');
-                    if (colorField) {
-                        colorField.value = '#0d6efd';
-                    }
-                }
-                if (!visible && feedback) {
-                    feedback.textContent = '';
-                    feedback.className = 'small';
-                }
-            };
-
-            if (toggleButton && formWrapper) {
-                setFormVisible(false);
-                toggleButton.addEventListener('click', () => {
-                    const willShow = formWrapper.hidden;
-                    setFormVisible(willShow);
-                    if (willShow) {
-                        const focusTarget = form ? form.querySelector('input, select, textarea') : null;
-                        if (focusTarget) {
-                            focusTarget.focus();
-                        }
-                    }
+            if (filterSelect) {
+                filterSelect.addEventListener('change', () => {
+                    calendarRef.refetchEvents();
                 });
             }
 
-            if (form) {
-                form.addEventListener('submit', async (event) => {
-                    event.preventDefault();
-                    if (feedback) {
-                        feedback.textContent = '';
-                        feedback.className = 'small';
-                    }
+            if (modalEl) {
+                modalEl.addEventListener('shown.bs.modal', () => {
+                    focusFirstField();
+                });
+                modalEl.addEventListener('hidden.bs.modal', () => {
+                    currentEventId = null;
+                    resetModalForm();
+                    setModalMode('create');
+                });
+            }
 
-                    const formData = new FormData(form);
+            if (modalForm) {
+                modalForm.addEventListener('submit', async (event) => {
+                    event.preventDefault();
+                    applyFeedback(modalFeedback, '', null);
+
+                    const formData = new FormData(modalForm);
                     const start = formData.get('startdatum');
                     let end = formData.get('slutdatum');
 
                     if (!start) {
-                        if (feedback) {
-                            feedback.textContent = 'Startdatum måste anges.';
-                            feedback.classList.add('text-danger');
-                        }
+                        applyFeedback(modalFeedback, 'Startdatum måste anges.', 'danger');
                         return;
                     }
 
                     if (end && end < start) {
-                        if (feedback) {
-                            feedback.textContent = 'Slutdatum kan inte vara före startdatum.';
-                            feedback.classList.add('text-danger');
-                        }
+                        applyFeedback(modalFeedback, 'Slutdatum kan inte vara före startdatum.', 'danger');
                         return;
                     }
 
@@ -192,8 +376,30 @@
                         end = start;
                     }
 
+                    let endpoint = 'ajax/add_event.php';
+                    let successMessage = 'Händelsen skapades.';
+
+                    if (modalMode === 'edit') {
+                        if (!currentEventId) {
+                            applyFeedback(modalFeedback, 'Händelsen saknar identitet.', 'danger');
+                            return;
+                        }
+                        formData.set('event_id', currentEventId);
+                        endpoint = 'ajax/update_event.php';
+                        successMessage = 'Händelsen uppdaterades.';
+                    } else {
+                        formData.delete('event_id');
+                    }
+
+                    if (saveButton) {
+                        saveButton.disabled = true;
+                    }
+                    if (deleteButton && modalMode === 'edit') {
+                        deleteButton.disabled = true;
+                    }
+
                     try {
-                        const response = await fetch('ajax/add_event.php', {
+                        const response = await fetch(endpoint, {
                             method: 'POST',
                             body: formData,
                         });
@@ -202,23 +408,59 @@
                             throw new Error(result.error || 'Kunde inte spara händelsen.');
                         }
 
-                        if (feedback) {
-                            feedback.textContent = 'Händelsen sparades.';
-                            feedback.classList.add('text-success');
-                        }
-                        if (form) {
-                            form.reset();
-                            const colorField = form.querySelector('#event-color');
-                            if (colorField) {
-                                colorField.value = '#0d6efd';
-                            }
-                        }
+                        applyFeedback(modalFeedback, successMessage, 'success');
                         calendarRef.refetchEvents();
-                    } catch (error) {
-                        if (feedback) {
-                            feedback.textContent = error.message;
-                            feedback.classList.add('text-danger');
+                        const instance = getModalInstance();
+                        if (instance) {
+                            instance.hide();
                         }
+                    } catch (error) {
+                        applyFeedback(modalFeedback, error.message, 'danger');
+                    } finally {
+                        if (saveButton) {
+                            saveButton.disabled = false;
+                        }
+                        if (deleteButton && modalMode === 'edit') {
+                            deleteButton.disabled = false;
+                        }
+                    }
+                });
+            }
+
+            if (deleteButton) {
+                deleteButton.addEventListener('click', async () => {
+                    if (modalMode !== 'edit' || !currentEventId) {
+                        return;
+                    }
+                    if (!window.confirm('Vill du ta bort den här händelsen?')) {
+                        return;
+                    }
+
+                    applyFeedback(modalFeedback, '', null);
+                    deleteButton.disabled = true;
+                    const payload = new FormData();
+                    payload.append('event_id', currentEventId);
+
+                    try {
+                        const response = await fetch('ajax/delete_event.php', {
+                            method: 'POST',
+                            body: payload,
+                        });
+                        const result = await response.json();
+                        if (!response.ok || !result.success) {
+                            throw new Error(result.error || 'Kunde inte ta bort händelsen.');
+                        }
+
+                        applyFeedback(modalFeedback, 'Händelsen togs bort.', 'success');
+                        calendarRef.refetchEvents();
+                        const instance = getModalInstance();
+                        if (instance) {
+                            instance.hide();
+                        }
+                    } catch (error) {
+                        applyFeedback(modalFeedback, error.message, 'danger');
+                    } finally {
+                        deleteButton.disabled = false;
                     }
                 });
             }

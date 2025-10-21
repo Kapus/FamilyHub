@@ -4,11 +4,18 @@ require_login();
 
 header('Content-Type: application/json');
 
+$id = isset($_POST['event_id']) ? (int) $_POST['event_id'] : 0;
 $title = trim($_POST['titel'] ?? '');
 $start = $_POST['startdatum'] ?? '';
 $end = $_POST['slutdatum'] ?? '';
 $color = $_POST['farg'] ?? '#0d6efd';
 $userId = $_POST['anvandar_id'] ?? '';
+
+if ($id <= 0) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'error' => 'Ogiltigt händelse-ID.']);
+    exit;
+}
 
 if ($title === '' || $start === '') {
     http_response_code(422);
@@ -38,7 +45,13 @@ if ($userId !== '') {
 
 try {
     $stmt = $pdo->prepare(
-        'INSERT INTO events (titel, datum, slut_datum, anvandar_id, farg) VALUES (:title, :start, :end, :user, :color)'
+        'UPDATE events
+            SET titel = :title,
+                datum = :start,
+                slut_datum = :end,
+                anvandar_id = :user,
+                farg = :color
+          WHERE id = :id'
     );
     $stmt->execute([
         'title' => $title,
@@ -46,30 +59,17 @@ try {
         'end' => $endDate->format('Y-m-d'),
         'user' => $targetUserId,
         'color' => $color,
+        'id' => $id,
     ]);
 
-    $eventId = (int) $pdo->lastInsertId();
-    $inclusiveEnd = $endDate->format('Y-m-d');
-    $exclusiveEnd = $endDate->modify('+1 day')->format('Y-m-d');
+    if ($stmt->rowCount() === 0) {
+        http_response_code(404);
+        echo json_encode(['success' => false, 'error' => 'Händelsen kunde inte uppdateras.']);
+        exit;
+    }
 
-    echo json_encode([
-        'success' => true,
-        'event' => [
-            'id' => $eventId,
-            'title' => $title,
-            'start' => $startDate->format('Y-m-d'),
-            'end' => $exclusiveEnd,
-            'allDay' => true,
-            'backgroundColor' => $color,
-            'borderColor' => $color,
-            'extendedProps' => [
-                'inclusiveEnd' => $inclusiveEnd,
-                'anvandarId' => $targetUserId,
-                'color' => $color,
-            ],
-        ],
-    ]);
+    echo json_encode(['success' => true]);
 } catch (PDOException $e) {
     http_response_code(500);
-    echo json_encode(['success' => false, 'error' => 'Kunde inte spara händelsen.']);
+    echo json_encode(['success' => false, 'error' => 'Kunde inte uppdatera händelsen.']);
 }

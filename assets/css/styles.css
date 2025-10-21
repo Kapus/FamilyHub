@@ -72,10 +72,3 @@ body {
     background-color: rgba(13, 110, 253, 0.1);
 }
 
-#calendar-event-form .form-text {
-    text-align: left;
-}
-
-#calendar-feedback {
-    min-height: 1.25rem;
-}
