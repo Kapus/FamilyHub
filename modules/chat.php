@@ -72,34 +72,3 @@ $familyMembers = $familyStmt->fetchAll();
         </div>
     </div>
 </div>
-<script>
-(() => {
-    const form = document.getElementById('chat-form');
-    const feedback = document.getElementById('chat-feedback');
-    if (!form) {
-        return;
-    }
-    form.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        feedback.textContent = 'Skickar...';
-        const formData = new FormData(form);
-        try {
-            const response = await fetch('ajax/send_message.php', {
-                method: 'POST',
-                body: formData
-            });
-            const result = await response.json();
-            if (!response.ok || !result.success) {
-                throw new Error(result.error || 'Kunde inte skicka meddelandet.');
-            }
-            feedback.textContent = 'Meddelandet skickades!';
-            form.reset();
-            // Ladda om chattmodulen för att visa det nya meddelandet
-            setTimeout(() => window.FamilyHubDashboard.loadModule('chat'), 300);
-        } catch (error) {
-            feedback.textContent = error.message;
-            feedback.classList.add('text-danger');
-        }
-    });
-})();
-</script>

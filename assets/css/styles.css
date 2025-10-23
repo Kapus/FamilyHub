@@ -9,7 +9,9 @@ body {
 
 .dashboard-sidebar {
     width: 260px;
+    flex: 0 0 260px;
 }
+
 
 .dashboard-sidebar .nav-link {
     border-radius: 0.5rem;

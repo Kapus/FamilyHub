@@ -3,6 +3,12 @@ require_once __DIR__ . '/config.php';
 require_login();
 
 $user = $_SESSION['user'];
+
+$availableModules = ['calendar', 'tasks', 'meals', 'chat', 'photos'];
+$defaultModule = $_GET['module'] ?? 'calendar';
+if (!in_array($defaultModule, $availableModules, true)) {
+    $defaultModule = 'calendar';
+}
 ?>
 <!DOCTYPE html>
 <html lang="sv">
@@ -18,24 +24,27 @@ $user = $_SESSION['user'];
 <body class="bg-light">
 <div class="dashboard d-flex">
     <aside class="dashboard-sidebar d-flex flex-column bg-white border-end">
-        <div class="p-4 border-bottom">
+        <div class="p-4">
             <a class="navbar-brand fw-semibold text-primary" href="dashboard.php">Familyhub</a>
         </div>
         <nav class="nav flex-column nav-pills p-3 gap-1">
-            <a class="nav-link active d-flex align-items-center gap-2" data-module="calendar" href="#">
+            <a class="nav-link<?= $defaultModule === 'calendar' ? ' active' : '' ?> d-flex align-items-center gap-2" data-module="calendar" href="#">
                 <span class="bi bi-calendar3"></span><span>Kalender</span>
             </a>
-            <a class="nav-link d-flex align-items-center gap-2" data-module="tasks" href="#">
+            <a class="nav-link<?= $defaultModule === 'tasks' ? ' active' : '' ?> d-flex align-items-center gap-2" data-module="tasks" href="#">
                 <span class="bi bi-check2-square"></span><span>Att göra-listor</span>
             </a>
-            <a class="nav-link d-flex align-items-center gap-2" data-module="meals" href="#">
+            <a class="nav-link<?= $defaultModule === 'meals' ? ' active' : '' ?> d-flex align-items-center gap-2" data-module="meals" href="#">
                 <span class="bi bi-egg-fried"></span><span>Middagsplanering</span>
             </a>
-            <a class="nav-link d-flex align-items-center gap-2" data-module="chat" href="#">
+            <a class="nav-link<?= $defaultModule === 'chat' ? ' active' : '' ?> d-flex align-items-center gap-2" data-module="chat" href="#">
                 <span class="bi bi-chat-dots"></span><span>Familjechatt</span>
             </a>
-            <a class="nav-link d-flex align-items-center gap-2" data-module="photos" href="#">
+            <a class="nav-link<?= $defaultModule === 'photos' ? ' active' : '' ?> d-flex align-items-center gap-2" data-module="photos" href="#">
                 <span class="bi bi-images"></span><span>Minnen</span>
+            </a>
+            <a class="nav-link d-flex align-items-center gap-2" href="profile.php">
+                <span class="bi bi-person-circle"></span><span>Min profil</span>
             </a>
         </nav>
         <div class="mt-auto p-3 border-top small text-muted">
@@ -65,11 +74,12 @@ $user = $_SESSION['user'];
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
 <script src="assets/js/calendar-module.js"></script>
+<script src="assets/js/chat-module.js"></script>
 <script src="assets/js/dashboard.js"></script>
 <script>
-// Ladda standardmodulen (kalender) vid sidstart
 window.addEventListener('DOMContentLoaded', () => {
-    window.FamilyHubDashboard.loadModule('calendar');
+    const defaultModule = <?= json_encode($defaultModule) ?>;
+    window.FamilyHubDashboard.loadModule(defaultModule);
 });
 </script>
 </body>
