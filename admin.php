@@ -418,18 +418,20 @@ foreach ($mealsData as $mealRow) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Familyhub | Adminpanel</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<body class="dashboard-body">
+<nav class="navbar navbar-expand-lg navbar-dark dashboard-navbar py-3">
     <div class="container-fluid">
-        <a class="navbar-brand" href="dashboard.php">Familyhub</a>
-        <div class="d-flex">
-            <a class="btn btn-outline-light btn-sm" href="dashboard.php">Tillbaka till dashboard</a>
+        <a class="navbar-brand" href="dashboard.php?module=calendar">Familyhub Admin</a>
+        <div class="ms-auto d-flex align-items-center gap-2">
+            <a class="btn btn-outline-light btn-sm" href="dashboard.php">Till dashboard</a>
+            <a class="btn btn-light btn-sm" href="logout.php">Logga ut</a>
         </div>
     </div>
 </nav>
 
-<div class="container py-4">
+<main class="container-xxl admin-shell">
     <h1 class="h3 mb-4">Adminpanel</h1>
 
     <?php foreach ($alerts as $alert): ?>
@@ -440,7 +442,7 @@ foreach ($mealsData as $mealRow) {
 
     <div class="row g-4 mb-4">
         <div class="col-lg-6">
-            <div class="card shadow-sm h-100">
+            <div class="card admin-card shadow-sm border-0 h-100">
                 <div class="card-body">
                     <h2 class="h5">Skapa ny användare</h2>
                     <form method="post" novalidate>
@@ -470,7 +472,7 @@ foreach ($mealsData as $mealRow) {
             </div>
         </div>
         <div class="col-lg-6">
-            <div class="card shadow-sm h-100">
+            <div class="card admin-card shadow-sm border-0 h-100">
                 <div class="card-body">
                     <h2 class="h5">Befintliga användare</h2>
                     <div class="table-responsive">
@@ -506,7 +508,7 @@ foreach ($mealsData as $mealRow) {
     <div class="row g-4">
         <div class="col-xl-5">
             <div class="d-flex flex-column gap-4 h-100">
-                <div class="card shadow-sm">
+                <div class="card admin-card shadow-sm border-0">
                     <div class="card-body">
                         <h2 class="h5">Skapa ny kategori</h2>
                         <form method="post" novalidate>
@@ -525,7 +527,7 @@ foreach ($mealsData as $mealRow) {
                     </div>
                 </div>
 
-                <div class="card shadow-sm">
+                <div class="card admin-card shadow-sm border-0">
                     <div class="card-body">
                         <h2 class="h5">Lägg till uppgift</h2>
                         <form method="post" novalidate>
@@ -577,7 +579,7 @@ foreach ($mealsData as $mealRow) {
         </div>
 
         <div class="col-xl-7">
-            <div class="card shadow-sm h-100">
+            <div class="card admin-card shadow-sm border-0 h-100">
                 <div class="card-body d-flex flex-column">
                     <h2 class="h5">Kategorier</h2>
                     <div class="table-responsive">
@@ -630,7 +632,7 @@ foreach ($mealsData as $mealRow) {
 
     <div class="row g-4 mt-1">
         <div class="col-xl-5">
-            <div class="card shadow-sm mb-4">
+            <div class="card admin-card shadow-sm border-0 mb-4">
                 <div class="card-body">
                     <h2 class="h5">Lägg till recept</h2>
                     <form method="post" novalidate>
@@ -652,7 +654,7 @@ foreach ($mealsData as $mealRow) {
                 </div>
             </div>
 
-            <div class="card shadow-sm">
+            <div class="card admin-card shadow-sm border-0">
                 <div class="card-body">
                     <h2 class="h5">Receptbank</h2>
                     <?php if (!empty($recipes)): ?>
@@ -687,7 +689,7 @@ foreach ($mealsData as $mealRow) {
         </div>
 
         <div class="col-xl-7">
-            <div class="card shadow-sm h-100">
+            <div class="card admin-card shadow-sm border-0 h-100">
                 <div class="card-body">
                     <h2 class="h5">Veckans middagar</h2>
                     <p class="small text-muted">Fyll i rätten för varje dag. Välj gärna ett recept för att kunna återanvända det i framtiden. Lämna en dag tom för att rensa den ur planen.</p>
@@ -700,7 +702,7 @@ foreach ($mealsData as $mealRow) {
                                 $currentNote = $currentMeal['note'] ?? '';
                                 $currentRecipeId = $currentMeal['recipe_id'] ?? null;
                             ?>
-                            <div class="border rounded p-3 mb-3">
+                            <div class="module-surface rounded-3 p-3 mb-3">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <h3 class="h6 mb-0"><?= htmlspecialchars($dayLabel) ?></h3>
                                     <?php if ($currentRecipeId && isset($recipesById[(int) $currentRecipeId])): ?>
@@ -736,6 +738,6 @@ foreach ($mealsData as $mealRow) {
             </div>
         </div>
     </div>
-</div>
+</main>
 </body>
 </html>

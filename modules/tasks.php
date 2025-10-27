@@ -98,7 +98,7 @@ $totalTasks = array_reduce($displayLists, static function ($carry, $list) use ($
 }, 0);
 ?>
 
-<div class="card shadow-sm todo-card">
+<div class="card module-surface shadow-sm border-0 todo-card">
     <div class="card-body">
         <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 todo-header mb-4">
             <div>

@@ -1,40 +1,125 @@
-/* Enkel grundstil för Familyhub */
-body {
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+/* Familyhub – klassisk bootstrap-känsla med ljusblå/lila tema */
+
+:root {
+    --fh-primary: #6a63ff;
+    --fh-primary-dark: #4d47d6;
+    --fh-secondary: #6dd5fa;
+    --fh-secondary-dark: #4ca4d6;
+    --fh-surface: rgba(255, 255, 255, 0.88);
+    --fh-surface-strong: rgba(255, 255, 255, 0.95);
+    --fh-border: rgba(106, 99, 255, 0.18);
+    --fh-text: #2f2d4a;
+    --fh-muted: #6c6a89;
 }
 
-.dashboard {
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(150deg, rgba(33, 35, 60, 0.95), rgba(67, 56, 127, 0.92));
+    background-attachment: fixed;
+    color: var(--fh-text);
     min-height: 100vh;
 }
 
-.dashboard-sidebar {
-    width: 260px;
-    flex: 0 0 260px;
+.dashboard-navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1050;
+    background: linear-gradient(135deg, var(--fh-primary) 0%, var(--fh-secondary-dark) 100%);
+    box-shadow: 0 0.75rem 1.5rem rgba(35, 40, 72, 0.18);
 }
 
+.dashboard-navbar .navbar-brand {
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
 
-.dashboard-sidebar .nav-link {
-    border-radius: 0.5rem;
-    color: #0d6efd;
+.dashboard-navbar .btn-outline-light {
+    border-color: rgba(255, 255, 255, 0.55);
+    color: #fff;
+}
+
+.dashboard-navbar .btn-outline-light:hover {
+    background-color: rgba(255, 255, 255, 0.18);
+    border-color: transparent;
+}
+
+.dashboard-wrapper {
+    min-height: calc(100vh - 64px);
+}
+
+.dashboard-panel,
+.dashboard-main-card,
+.admin-card,
+.module-surface {
+    background-color: var(--fh-surface);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--fh-border);
+    border-radius: 1rem;
+}
+
+.dashboard-panel .card-body {
+    padding: 2rem 1.75rem 1.5rem;
+}
+
+.dashboard-menu .list-group-item {
+    border-radius: 0.75rem;
+    border: 1px solid transparent;
+    margin-bottom: 0.5rem;
+    color: var(--fh-muted);
     font-weight: 500;
+    transition: all 0.2s ease;
 }
 
-.dashboard-sidebar .nav-link.active,
-.dashboard-sidebar .nav-link:hover {
-    background-color: rgba(13, 110, 253, 0.1);
-    color: #0a58ca;
+.dashboard-menu .list-group-item:last-child {
+    margin-bottom: 0;
 }
 
-.dashboard-topbar {
-    min-height: 72px;
+.dashboard-menu .list-group-item.active,
+.dashboard-menu .list-group-item:hover {
+    border-color: rgba(106, 99, 255, 0.45);
+    background: linear-gradient(135deg, rgba(106, 99, 255, 0.12), rgba(109, 213, 250, 0.12));
+    color: var(--fh-primary-dark);
 }
 
-.dashboard-content {
-    background-color: #f8f9fa;
+.dashboard-menu svg,
+.dashboard-menu .bi {
+    flex-shrink: 0;
+    font-size: 1.2rem;
+}
+
+#bitcoin-ticker {
+    background: var(--fh-surface-strong);
+    border-radius: 0 0 1rem 1rem;
+    border-top: 1px solid var(--fh-border);
+    padding: 1.25rem 1.75rem;
+}
+
+#bitcoin-price {
+    color: var(--fh-primary);
+}
+
+.dashboard-main-card {
+    overflow: hidden;
+}
+
+.dashboard-header {
+    background: var(--fh-surface-strong);
+    border-bottom: 1px solid var(--fh-border);
+    padding: 1.75rem 2rem;
+}
+
+.dashboard-header p {
+    color: var(--fh-muted);
 }
 
 .module-container {
-    min-height: 400px;
+    min-height: 420px;
+    padding: 2rem;
+}
+
+.module-container > .card,
+.module-container .card.shadow-sm {
+    border-radius: 1rem;
 }
 
 .todo-card {
@@ -56,32 +141,31 @@ body {
 }
 
 .todo-list-item {
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    border-radius: 0.75rem;
-    padding: 1rem 1.25rem;
-    background-color: #fff;
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(106, 99, 255, 0.12);
+    border-radius: 0.9rem;
+    padding: 1.25rem 1.5rem;
+    background-color: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 0.75rem 1.25rem rgba(59, 72, 130, 0.07);
 }
 
-
 .todo-list-item-accent-1 {
-    border-left: 4px solid rgba(13, 110, 253, 0.65);
+    border-left: 4px solid rgba(106, 99, 255, 0.7);
 }
 
 .todo-list-item-accent-2 {
-    border-left: 4px solid rgba(25, 135, 84, 0.65);
+    border-left: 4px solid rgba(109, 213, 250, 0.7);
 }
 
 .todo-list-item-accent-3 {
-    border-left: 4px solid rgba(255, 193, 7, 0.65);
+    border-left: 4px solid rgba(181, 126, 255, 0.7);
 }
 
 .todo-list-item-accent-4 {
-    border-left: 4px solid rgba(220, 53, 69, 0.65);
+    border-left: 4px solid rgba(255, 167, 196, 0.7);
 }
 
 .todo-list-item-accent-5 {
-    border-left: 4px solid rgba(102, 16, 242, 0.65);
+    border-left: 4px solid rgba(114, 193, 255, 0.7);
 }
 
 .todo-list-item-default {
@@ -93,7 +177,7 @@ body {
 }
 
 .todo-task-line + .todo-task-line {
-    border-top: 1px dashed rgba(0, 0, 0, 0.08);
+    border-top: 1px dashed rgba(106, 99, 255, 0.16);
     padding-top: 0.75rem;
     margin-top: 0.75rem;
 }
@@ -106,24 +190,149 @@ body {
     font-weight: 600;
 }
 
-@media (max-width: 992px) {
-    .dashboard {
-        flex-direction: column;
-    }
+.meal-card,
+.recipe-card {
+    background-color: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(106, 99, 255, 0.12);
+    border-radius: 0.9rem;
+    box-shadow: 0 1rem 1.75rem rgba(59, 72, 130, 0.08);
+}
 
-    .dashboard-sidebar {
-        width: 100%;
-    }
+.recipe-module .card {
+    border-radius: 1rem;
+}
 
-    .dashboard-sidebar .nav {
-        flex-direction: row;
-        overflow-x: auto;
-    }
+.recipe-search-card .input-group-text {
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+}
 
-    .dashboard-sidebar .nav-link {
-        flex: 1 0 auto;
-        text-align: center;
-    }
+.recipe-search-card .form-control {
+    border-color: rgba(106, 99, 255, 0.2);
+    box-shadow: none;
+}
+
+.recipe-sidebar {
+    min-height: 100%;
+}
+
+.recipe-category-navbar {
+    border-bottom: 1px solid var(--fh-border);
+    padding-bottom: 0.75rem;
+}
+
+.recipe-category-navbar form {
+    margin: 0;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+}
+
+.recipe-filter-btn {
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(106, 99, 255, 0.16);
+    border-radius: 0.75rem;
+    padding: 0.65rem 0.85rem;
+    color: var(--fh-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: all 0.2s ease;
+    flex: 0 0 auto;
+    text-decoration: none;
+}
+
+.recipe-filter-btn:hover {
+    background: rgba(106, 99, 255, 0.12);
+    color: var(--fh-primary-dark);
+    border-color: rgba(106, 99, 255, 0.35);
+}
+
+.recipe-filter-btn.active {
+    background: linear-gradient(135deg, rgba(106, 99, 255, 0.18), rgba(109, 213, 250, 0.18));
+    color: var(--fh-primary-dark);
+    border-color: rgba(106, 99, 255, 0.45);
+}
+
+.recipe-card-modern {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(106, 99, 255, 0.12);
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 1rem 2rem rgba(59, 72, 130, 0.1);
+    color: var(--fh-text);
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.recipe-card-modern:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 1rem 2.2rem rgba(59, 72, 130, 0.16);
+    text-decoration: none;
+}
+
+.recipe-card-media {
+    width: 100%;
+    height: 180px;
+    background-size: cover;
+    background-position: center;
+}
+
+.recipe-card-body {
+    padding: 1.25rem;
+}
+
+.recipe-category-badge {
+    background: rgba(106, 99, 255, 0.15);
+    color: var(--fh-primary-dark);
+    font-weight: 600;
+}
+
+.recipe-rating i {
+    font-size: 0.9rem;
+    margin-left: 0.05rem;
+}
+
+.recipe-card-meta span {
+    white-space: nowrap;
+}
+
+.meal-planner-panel {
+    min-height: 100%;
+}
+
+.meal-planner-list .meal-planner-item {
+    background: transparent;
+    border-color: rgba(106, 99, 255, 0.12);
+    border-radius: 0.75rem;
+    margin-bottom: 0.75rem;
+    padding: 0.9rem 1rem;
+}
+
+.meal-planner-list .meal-planner-item:last-child {
+    margin-bottom: 0;
+}
+
+.meal-planner-list .badge {
+    font-size: 0.75rem;
+}
+
+.meal-planner-item .bi-check-circle-fill {
+    font-size: 0.9rem;
+}
+
+.recipe-planner-link {
+    color: var(--fh-primary-dark);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.recipe-planner-link:hover {
+    text-decoration: underline;
+}
+
+.recipe-module .list-group-item + .list-group-item {
+    border-top: 1px solid rgba(106, 99, 255, 0.12);
 }
 
 #familyhub-calendar {
@@ -131,15 +340,63 @@ body {
 }
 
 [data-calendar-title] {
-    font-weight: 500;
+    font-weight: 600;
+    color: var(--fh-primary-dark);
 }
 
 [data-calendar-view].active {
-    background-color: #0d6efd !important;
+    background-color: var(--fh-primary) !important;
     color: #fff !important;
 }
 
 .fc .fc-daygrid-day.fc-day-today {
-    background-color: rgba(13, 110, 253, 0.1);
+    background-color: rgba(106, 99, 255, 0.12);
+}
+
+.admin-shell {
+    padding: 3rem 0;
+}
+
+.admin-card {
+    background-color: var(--fh-surface);
+    box-shadow: 0 0.75rem 1.25rem rgba(59, 72, 130, 0.08);
+    border-radius: 1rem;
+}
+
+.admin-card .card-header,
+.admin-card .card-body {
+    background: transparent;
+}
+
+.admin-card .table thead th {
+    border-bottom-width: 1px;
+    color: var(--fh-muted);
+}
+
+.admin-card .table tbody td {
+    vertical-align: middle;
+}
+
+.admin-card .btn-outline-danger {
+    border-color: rgba(220, 53, 69, 0.18);
+}
+
+@media (max-width: 992px) {
+    .dashboard-navbar {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .dashboard-panel .card-body {
+        padding: 1.5rem;
+    }
+
+    .dashboard-header {
+        padding: 1.5rem;
+    }
+
+    .module-container {
+        padding: 1.5rem;
+    }
 }
 
