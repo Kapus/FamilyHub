@@ -1,46 +1,142 @@
-/* Familyhub – klassisk bootstrap-känsla med ljusblå/lila tema */
+/* Familyhub – steampunk-inspirerat tema med koppar och antika detaljer */
 
 :root {
-    --fh-primary: #6a63ff;
-    --fh-primary-dark: #4d47d6;
-    --fh-secondary: #6dd5fa;
-    --fh-secondary-dark: #4ca4d6;
-    --fh-surface: rgba(255, 255, 255, 0.88);
-    --fh-surface-strong: rgba(255, 255, 255, 0.95);
-    --fh-border: rgba(106, 99, 255, 0.18);
-    --fh-text: #2f2d4a;
-    --fh-muted: #6c6a89;
+    --fh-primary: #b87333;
+    --fh-primary-dark: #5e2c04;
+    --fh-secondary: #c19a6b;
+    --fh-secondary-dark: #8b5a2b;
+    --fh-surface: rgba(53, 41, 34, 0.92);
+    --fh-surface-strong: rgba(68, 52, 42, 0.96);
+    --fh-border: rgba(184, 115, 51, 0.45);
+    --fh-text: #f5e9d4;
+    --fh-muted: #d4c3a8;
+    --fh-shadow: rgba(18, 9, 4, 0.65);
 }
 
 body {
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(150deg, rgba(33, 35, 60, 0.95), rgba(67, 56, 127, 0.92));
+    font-family: "Segoe UI", "Georgia", serif;
+    background:
+        radial-gradient(circle at 15% 0%, rgba(124, 78, 35, 0.35), transparent 55%),
+        radial-gradient(circle at 85% 0%, rgba(90, 57, 28, 0.32), transparent 50%),
+        linear-gradient(160deg, #1a0f08 0%, #100804 100%);
     background-attachment: fixed;
     color: var(--fh-text);
     min-height: 100vh;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Georgia", "Times New Roman", serif;
+    letter-spacing: 0.04em;
+    color: var(--fh-text);
+}
+
+a {
+    color: var(--fh-secondary);
+}
+
+a:hover,
+a:focus {
+    color: var(--fh-primary);
+}
+
+.btn-primary {
+    background-color: var(--fh-primary);
+    border-color: var(--fh-primary-dark);
+    color: #1a0f08;
+    font-weight: 600;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--fh-primary-dark);
+    border-color: #3f1b06;
+    color: var(--fh-text);
+    box-shadow: 0 0.6rem 1.4rem rgba(10, 5, 2, 0.45);
+}
+
+.text-muted {
+    color: rgba(212, 195, 168, 0.78) !important;
+}
+
+.text-body-emphasis {
+    color: var(--fh-text) !important;
+}
+
+.badge.text-bg-light {
+    background-color: rgba(245, 233, 212, 0.85) !important;
+    color: #3a1d0d;
+}
+
+hr {
+    border-top: 1px solid rgba(184, 115, 51, 0.35);
+}
+
+.form-control,
+.form-select {
+    background-color: rgba(28, 18, 12, 0.85);
+    color: var(--fh-text);
+    border-color: rgba(184, 115, 51, 0.35);
+}
+
+.form-control::placeholder {
+    color: rgba(212, 195, 168, 0.6);
+}
+
+.form-control:focus,
+.form-select:focus {
+    color: var(--fh-text);
+    background-color: rgba(33, 22, 15, 0.9);
+    border-color: rgba(184, 115, 51, 0.65);
+    box-shadow: 0 0 0 0.2rem rgba(184, 115, 51, 0.25);
+}
+
+
 .dashboard-navbar {
     position: sticky;
     top: 0;
     z-index: 1050;
-    background: linear-gradient(135deg, var(--fh-primary) 0%, var(--fh-secondary-dark) 100%);
-    box-shadow: 0 0.75rem 1.5rem rgba(35, 40, 72, 0.18);
+    background: linear-gradient(130deg, rgba(46, 23, 9, 0.95) 0%, rgba(27, 14, 6, 0.98) 55%, rgba(94, 44, 15, 0.98) 100%);
+    box-shadow: 0 0.75rem 1.6rem var(--fh-shadow);
+    border-bottom: 1px solid rgba(184, 115, 51, 0.5);
 }
 
 .dashboard-navbar .navbar-brand {
     font-weight: 700;
     letter-spacing: 0.04em;
+    color: var(--fh-text);
+}
+
+.dashboard-navbar .navbar-brand:hover,
+.dashboard-navbar .navbar-brand:focus {
+    color: var(--fh-secondary);
 }
 
 .dashboard-navbar .btn-outline-light {
-    border-color: rgba(255, 255, 255, 0.55);
-    color: #fff;
+    border-color: rgba(245, 233, 212, 0.55);
+    color: var(--fh-text);
+    background-color: rgba(245, 233, 212, 0.05);
 }
 
 .dashboard-navbar .btn-outline-light:hover {
-    background-color: rgba(255, 255, 255, 0.18);
-    border-color: transparent;
+    background-color: rgba(245, 233, 212, 0.18);
+    border-color: rgba(245, 233, 212, 0.65);
+}
+
+.dashboard-navbar .btn-light {
+    background-color: rgba(245, 233, 212, 0.85);
+    border-color: rgba(245, 233, 212, 0.9);
+    color: #3a1d0d;
+}
+
+.dashboard-navbar .btn-light:hover,
+.dashboard-navbar .btn-light:focus {
+    background-color: rgba(184, 115, 51, 0.85);
+    border-color: rgba(184, 115, 51, 0.9);
+    color: var(--fh-text);
+}
+
+.dashboard-navbar .navbar-text {
+    color: rgba(245, 233, 212, 0.75) !important;
 }
 
 .dashboard-wrapper {
@@ -52,9 +148,10 @@ body {
 .admin-card,
 .module-surface {
     background-color: var(--fh-surface);
-    backdrop-filter: blur(8px);
+    background-image: linear-gradient(160deg, rgba(255, 242, 220, 0.06) 0%, rgba(18, 9, 4, 0.4) 100%);
     border: 1px solid var(--fh-border);
     border-radius: 1rem;
+    box-shadow: 0 1.2rem 2.6rem rgba(10, 5, 2, 0.35);
 }
 
 .dashboard-panel .card-body {
@@ -63,9 +160,10 @@ body {
 
 .dashboard-menu .list-group-item {
     border-radius: 0.75rem;
-    border: 1px solid transparent;
+    border: 1px solid rgba(95, 64, 32, 0.4);
     margin-bottom: 0.5rem;
     color: var(--fh-muted);
+    background: rgba(33, 24, 19, 0.7);
     font-weight: 500;
     transition: all 0.2s ease;
 }
@@ -76,9 +174,10 @@ body {
 
 .dashboard-menu .list-group-item.active,
 .dashboard-menu .list-group-item:hover {
-    border-color: rgba(106, 99, 255, 0.45);
-    background: linear-gradient(135deg, rgba(106, 99, 255, 0.12), rgba(109, 213, 250, 0.12));
-    color: var(--fh-primary-dark);
+    border-color: rgba(184, 115, 51, 0.65);
+    background: linear-gradient(135deg, rgba(184, 115, 51, 0.25), rgba(87, 44, 17, 0.35));
+    color: var(--fh-text);
+    box-shadow: 0 0.75rem 1.5rem rgba(8, 4, 2, 0.4);
 }
 
 .dashboard-menu svg,
@@ -141,35 +240,35 @@ body {
 }
 
 .todo-list-item {
-    border: 1px solid rgba(106, 99, 255, 0.12);
+    border: 1px solid rgba(184, 115, 51, 0.35);
     border-radius: 0.9rem;
     padding: 1.25rem 1.5rem;
-    background-color: rgba(255, 255, 255, 0.92);
-    box-shadow: 0 0.75rem 1.25rem rgba(59, 72, 130, 0.07);
+    background-color: rgba(47, 34, 25, 0.92);
+    box-shadow: 0 0.9rem 1.8rem rgba(8, 4, 2, 0.35);
 }
 
 .todo-list-item-accent-1 {
-    border-left: 4px solid rgba(106, 99, 255, 0.7);
+    border-left: 4px solid rgba(184, 115, 51, 0.75);
 }
 
 .todo-list-item-accent-2 {
-    border-left: 4px solid rgba(109, 213, 250, 0.7);
+    border-left: 4px solid rgba(193, 154, 107, 0.75);
 }
 
 .todo-list-item-accent-3 {
-    border-left: 4px solid rgba(181, 126, 255, 0.7);
+    border-left: 4px solid rgba(136, 84, 44, 0.75);
 }
 
 .todo-list-item-accent-4 {
-    border-left: 4px solid rgba(255, 167, 196, 0.7);
+    border-left: 4px solid rgba(112, 69, 32, 0.75);
 }
 
 .todo-list-item-accent-5 {
-    border-left: 4px solid rgba(114, 193, 255, 0.7);
+    border-left: 4px solid rgba(158, 110, 66, 0.75);
 }
 
 .todo-list-item-default {
-    border-left: 4px solid rgba(108, 117, 125, 0.4);
+    border-left: 4px solid rgba(80, 54, 32, 0.6);
 }
 
 .todo-task-list {
@@ -177,7 +276,7 @@ body {
 }
 
 .todo-task-line + .todo-task-line {
-    border-top: 1px dashed rgba(106, 99, 255, 0.16);
+    border-top: 1px dashed rgba(184, 115, 51, 0.3);
     padding-top: 0.75rem;
     margin-top: 0.75rem;
 }
@@ -192,10 +291,10 @@ body {
 
 .meal-card,
 .recipe-card {
-    background-color: rgba(255, 255, 255, 0.92);
-    border: 1px solid rgba(106, 99, 255, 0.12);
+    background-color: rgba(45, 33, 25, 0.92);
+    border: 1px solid rgba(184, 115, 51, 0.32);
     border-radius: 0.9rem;
-    box-shadow: 0 1rem 1.75rem rgba(59, 72, 130, 0.08);
+    box-shadow: 0 1rem 1.9rem rgba(8, 4, 2, 0.35);
 }
 
 .recipe-module .card {
@@ -209,8 +308,14 @@ body {
 }
 
 .recipe-search-card .form-control {
-    border-color: rgba(106, 99, 255, 0.2);
+    border-color: rgba(184, 115, 51, 0.35);
     box-shadow: none;
+}
+
+.input-group-text {
+    background-color: rgba(40, 26, 18, 0.85);
+    border-color: rgba(184, 115, 51, 0.35);
+    color: var(--fh-secondary);
 }
 
 .recipe-sidebar {
@@ -229,8 +334,8 @@ body {
 }
 
 .recipe-filter-btn {
-    background: rgba(255, 255, 255, 0.6);
-    border: 1px solid rgba(106, 99, 255, 0.16);
+    background: rgba(33, 24, 19, 0.7);
+    border: 1px solid rgba(184, 115, 51, 0.3);
     border-radius: 0.75rem;
     padding: 0.65rem 0.85rem;
     color: var(--fh-muted);
@@ -243,23 +348,23 @@ body {
 }
 
 .recipe-filter-btn:hover {
-    background: rgba(106, 99, 255, 0.12);
-    color: var(--fh-primary-dark);
-    border-color: rgba(106, 99, 255, 0.35);
+    background: linear-gradient(135deg, rgba(184, 115, 51, 0.22), rgba(87, 44, 17, 0.32));
+    color: var(--fh-text);
+    border-color: rgba(184, 115, 51, 0.5);
 }
 
 .recipe-filter-btn.active {
-    background: linear-gradient(135deg, rgba(106, 99, 255, 0.18), rgba(109, 213, 250, 0.18));
-    color: var(--fh-primary-dark);
-    border-color: rgba(106, 99, 255, 0.45);
+    background: linear-gradient(135deg, rgba(184, 115, 51, 0.32), rgba(87, 44, 17, 0.4));
+    color: var(--fh-text);
+    border-color: rgba(184, 115, 51, 0.65);
 }
 
 .recipe-card-modern {
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid rgba(106, 99, 255, 0.12);
+    background: rgba(42, 30, 23, 0.9);
+    border: 1px solid rgba(184, 115, 51, 0.3);
     border-radius: 1rem;
     overflow: hidden;
-    box-shadow: 0 1rem 2rem rgba(59, 72, 130, 0.1);
+    box-shadow: 0 1.1rem 2.3rem rgba(8, 4, 2, 0.45);
     color: var(--fh-text);
     text-decoration: none;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
@@ -267,7 +372,7 @@ body {
 
 .recipe-card-modern:hover {
     transform: translateY(-4px);
-    box-shadow: 0 1rem 2.2rem rgba(59, 72, 130, 0.16);
+    box-shadow: 0 1.2rem 2.6rem rgba(10, 5, 2, 0.55);
     text-decoration: none;
 }
 
@@ -280,11 +385,12 @@ body {
 
 .recipe-card-body {
     padding: 1.25rem;
+    background: linear-gradient(180deg, rgba(255, 242, 220, 0.06) 0%, rgba(18, 9, 4, 0.35) 100%);
 }
 
 .recipe-category-badge {
-    background: rgba(106, 99, 255, 0.15);
-    color: var(--fh-primary-dark);
+    background: rgba(184, 115, 51, 0.2);
+    color: var(--fh-text);
     font-weight: 600;
 }
 
@@ -302,8 +408,8 @@ body {
 }
 
 .meal-planner-list .meal-planner-item {
-    background: transparent;
-    border-color: rgba(106, 99, 255, 0.12);
+    background: rgba(33, 24, 19, 0.65);
+    border-color: rgba(184, 115, 51, 0.28);
     border-radius: 0.75rem;
     margin-bottom: 0.75rem;
     padding: 0.9rem 1rem;
@@ -322,17 +428,24 @@ body {
 }
 
 .recipe-planner-link {
-    color: var(--fh-primary-dark);
+    color: var(--fh-secondary);
     text-decoration: none;
     font-weight: 500;
 }
 
 .recipe-planner-link:hover {
+    color: var(--fh-primary);
     text-decoration: underline;
 }
 
 .recipe-module .list-group-item + .list-group-item {
-    border-top: 1px solid rgba(106, 99, 255, 0.12);
+    border-top: 1px solid rgba(184, 115, 51, 0.22);
+}
+
+.module-surface .list-group-item {
+    background-color: rgba(32, 22, 16, 0.85);
+    border-color: rgba(184, 115, 51, 0.25);
+    color: var(--fh-text);
 }
 
 #familyhub-calendar {
@@ -350,7 +463,7 @@ body {
 }
 
 .fc .fc-daygrid-day.fc-day-today {
-    background-color: rgba(106, 99, 255, 0.12);
+    background-color: rgba(184, 115, 51, 0.22);
 }
 
 .admin-shell {
@@ -359,8 +472,9 @@ body {
 
 .admin-card {
     background-color: var(--fh-surface);
-    box-shadow: 0 0.75rem 1.25rem rgba(59, 72, 130, 0.08);
+    box-shadow: 0 1rem 2rem rgba(8, 4, 2, 0.3);
     border-radius: 1rem;
+    border: 1px solid var(--fh-border);
 }
 
 .admin-card .card-header,
@@ -375,6 +489,24 @@ body {
 
 .admin-card .table tbody td {
     vertical-align: middle;
+}
+
+.table {
+    color: var(--fh-text);
+}
+
+.table thead th {
+    background-color: rgba(33, 23, 17, 0.85);
+    border-color: rgba(184, 115, 51, 0.3);
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+    --bs-table-accent-bg: rgba(31, 20, 14, 0.75);
+    color: var(--fh-text);
+}
+
+.table-striped > tbody > tr:nth-of-type(even) {
+    background-color: rgba(38, 25, 18, 0.85);
 }
 
 .admin-card .btn-outline-danger {
