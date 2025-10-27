@@ -25,7 +25,7 @@ if (!in_array($defaultModule, $availableModules, true)) {
 <div class="dashboard d-flex">
     <aside class="dashboard-sidebar d-flex flex-column bg-white border-end">
         <div class="p-4">
-            <a class="navbar-brand fw-semibold text-primary" href="dashboard.php">Familyhub</a>
+            <a class="navbar-brand fw-semibold text-primary" href="dashboard.php?module=calendar">Familyhub</a>
         </div>
         <nav class="nav flex-column nav-pills p-3 gap-1">
             <a class="nav-link<?= $defaultModule === 'calendar' ? ' active' : '' ?> d-flex align-items-center gap-2" data-module="calendar" href="#">
@@ -47,9 +47,12 @@ if (!in_array($defaultModule, $availableModules, true)) {
                 <span class="bi bi-person-circle"></span><span>Min profil</span>
             </a>
         </nav>
-        <div class="mt-auto p-3 border-top small text-muted">
-            <div><?= htmlspecialchars($user['email']) ?></div>
-            <div><?= htmlspecialchars($user['role']) ?></div>
+        <div class="mt-auto p-3 border-top">
+            <div class="d-flex flex-column gap-1" id="bitcoin-ticker" data-endpoint="https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true">
+                <div class="small text-muted">Bitcoin (BTC)</div>
+                <div class="h6 mb-0" id="bitcoin-price">Laddar pris…</div>
+                <div class="small" id="bitcoin-change"></div>
+            </div>
         </div>
     </aside>
     <div class="dashboard-main flex-grow-1 d-flex flex-column">
@@ -76,6 +79,7 @@ if (!in_array($defaultModule, $availableModules, true)) {
 <script src="assets/js/calendar-module.js"></script>
 <script src="assets/js/chat-module.js"></script>
 <script src="assets/js/dashboard.js"></script>
+<script src="assets/js/bitcoin-ticker.js"></script>
 <script>
 window.addEventListener('DOMContentLoaded', () => {
     const defaultModule = <?= json_encode($defaultModule) ?>;

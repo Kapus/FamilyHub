@@ -23,20 +23,43 @@ CREATE TABLE IF NOT EXISTS events (
     FOREIGN KEY (anvandar_id) REFERENCES users(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE IF NOT EXISTS task_lists (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    namn VARCHAR(150) NOT NULL,
+    kategori VARCHAR(100) NOT NULL,
+    beskrivning TEXT NULL,
+    skapad_av INT NULL,
+    skapad_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (skapad_av) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE IF NOT EXISTS tasks (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    lista_id INT NOT NULL,
     titel VARCHAR(150) NOT NULL,
     deadline DATE NULL,
-    status VARCHAR(50) DEFAULT 'Pågående',
+    status ENUM('Pågående', 'Klar') NOT NULL DEFAULT 'Pågående',
     tilldelad_till INT NULL,
+    FOREIGN KEY (lista_id) REFERENCES task_lists(id) ON DELETE CASCADE,
     FOREIGN KEY (tilldelad_till) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS recipes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    namn VARCHAR(150) NOT NULL,
+    beskrivning TEXT NULL,
+    url VARCHAR(255) NULL,
+    skapad_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS meals (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    dag VARCHAR(20) NOT NULL,
+    dag ENUM('Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag', 'Söndag') NOT NULL,
     ratt VARCHAR(150) NOT NULL,
-    recept_url VARCHAR(255) NULL
+    notering TEXT NULL,
+    recipe_id INT NULL,
+    UNIQUE KEY uniq_meals_dag (dag),
+    FOREIGN KEY (recipe_id) REFERENCES recipes(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS messages (
