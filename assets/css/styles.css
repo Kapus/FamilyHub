@@ -8,9 +8,13 @@
     --fh-surface: rgba(53, 41, 34, 0.92);
     --fh-surface-strong: rgba(68, 52, 42, 0.96);
     --fh-border: rgba(184, 115, 51, 0.45);
-    --fh-text: #f5e9d4;
-    --fh-muted: #d4c3a8;
+    --fh-text: #9c7244;
+    --fh-muted: #7c5a38;
     --fh-shadow: rgba(18, 9, 4, 0.65);
+    --bs-body-color: var(--fh-text);
+    --bs-heading-color: var(--fh-text);
+    --bs-secondary-color: var(--fh-muted);
+    --bs-card-color: var(--fh-text);
 }
 
 body {
@@ -23,7 +27,6 @@ body {
     color: var(--fh-text);
     min-height: 100vh;
 }
-
 h1, h2, h3, h4, h5, h6 {
     font-family: "Georgia", "Times New Roman", serif;
     letter-spacing: 0.04em;
@@ -76,6 +79,13 @@ hr {
     background-color: rgba(28, 18, 12, 0.85);
     color: var(--fh-text);
     border-color: rgba(184, 115, 51, 0.35);
+}
+
+[data-calendar-filter].form-select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23d6c0a1' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 12px 12px;
 }
 
 .form-control::placeholder {
